@@ -1,10 +1,10 @@
 /******************************************************************************
  * Spine Runtimes Software License
  * Version 2.1
- * 
+ *
  * Copyright (c) 2013, Esoteric Software
  * All rights reserved.
- * 
+ *
  * You are granted a perpetual, non-exclusive, non-sublicensable and
  * non-transferable license to install, execute and perform the Spine Runtimes
  * Software (the "Software") solely for internal use. Without the written
@@ -15,7 +15,7 @@
  * trademark, patent or other intellectual property or proprietary rights
  * notices on or in the Software, including any copy thereof. Redistributions
  * in binary or source form must include this license and terms.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY ESOTERIC SOFTWARE "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
@@ -72,8 +72,10 @@ public class SkeletonAnimation : SkeletonRenderer {
 			return;
 
 		state = new Spine.AnimationState(skeletonDataAsset.GetAnimationStateData());
-		if (_animationName != null && _animationName.Length > 0) {
-			state.SetAnimation(0, _animationName, loop);
+		if (_animationName != null && _animationName.Length > 0)
+		{
+			Spine.Animation animation = state.Data.skeletonData.FindAnimation(_animationName) ?? state.Data.skeletonData.animations[0];
+			state.SetAnimation(0, animation.name, loop);
 			Update(0);
 		}
 	}
@@ -91,17 +93,17 @@ public class SkeletonAnimation : SkeletonRenderer {
 		state.Update(deltaTime);
 		state.Apply(skeleton);
 
-		if (UpdateLocal != null) 
+		if (UpdateLocal != null)
 			UpdateLocal(this);
 
 		skeleton.UpdateWorldTransform();
 
-		if (UpdateWorld != null) { 
+		if (UpdateWorld != null) {
 			UpdateWorld(this);
 			skeleton.UpdateWorldTransform();
 		}
 
-		if (UpdateComplete != null) { 
+		if (UpdateComplete != null) {
 			UpdateComplete(this);
 		}
 	}
