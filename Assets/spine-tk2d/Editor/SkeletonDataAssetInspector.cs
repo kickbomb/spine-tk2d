@@ -255,9 +255,9 @@ public class SkeletonDataAssetInspector : Editor {
 			if (this.m_previewUtility == null && m_skeletonDataAsset.spriteCollection != null && !failedSkeletonDataLatch) {
 			this.m_lastTime = Time.realtimeSinceStartup;
 			this.m_previewUtility = new PreviewRenderUtility(true);
-			this.m_previewUtility.m_Camera.orthographic = true;
-			this.m_previewUtility.m_Camera.orthographicSize = (scale.floatValue * (m_skeletonDataAsset.spriteCollection.invOrthoSize * m_skeletonDataAsset.spriteCollection.halfTargetHeight)) / 100;
-			this.m_previewUtility.m_Camera.cullingMask = -2147483648;
+			this.m_previewUtility.camera.orthographic = true;
+			this.m_previewUtility.camera.orthographicSize = (scale.floatValue * (m_skeletonDataAsset.spriteCollection.invOrthoSize * m_skeletonDataAsset.spriteCollection.halfTargetHeight)) / 100;
+			this.m_previewUtility.camera.cullingMask = -2147483648;
 			this.CreatePreviewInstances();
 		}
 	}
@@ -361,17 +361,17 @@ public class SkeletonDataAssetInspector : Editor {
 			AdjustCameraGoals();
 		}
 			
-		float orthoSet = Mathf.Lerp(this.m_previewUtility.m_Camera.orthographicSize, m_orthoGoal, 0.1f);
+		float orthoSet = Mathf.Lerp(this.m_previewUtility.camera.orthographicSize, m_orthoGoal, 0.1f);
 			
-		this.m_previewUtility.m_Camera.orthographicSize = orthoSet;
+		this.m_previewUtility.camera.orthographicSize = orthoSet;
 
 			
-		float dist = Vector3.Distance(m_previewUtility.m_Camera.transform.position, m_posGoal);
+		float dist = Vector3.Distance(m_previewUtility.camera.transform.position, m_posGoal);
 		if (dist > m_skeletonDataAsset.scale) {
-			Vector3 pos = Vector3.Lerp(this.m_previewUtility.m_Camera.transform.position, m_posGoal, 0.1f);
+			Vector3 pos = Vector3.Lerp(this.m_previewUtility.camera.transform.position, m_posGoal, 0.1f);
 			pos.x = 0;
-			this.m_previewUtility.m_Camera.transform.position = pos;
-			this.m_previewUtility.m_Camera.transform.rotation = Quaternion.identity;
+			this.m_previewUtility.camera.transform.position = pos;
+			this.m_previewUtility.camera.transform.rotation = Quaternion.identity;
 			m_requireRefresh = true;
 		}
 	}
@@ -394,14 +394,14 @@ public class SkeletonDataAssetInspector : Editor {
 				m_skeletonAnimation.LateUpdate();
 				
 			if (drawHandles) {
-				Handles.SetCamera(m_previewUtility.m_Camera);
+				Handles.SetCamera(m_previewUtility.camera);
 				Handles.color = m_originColor;
 					
 				Handles.DrawLine(new Vector3(-1000 * m_skeletonDataAsset.scale, 0, 0), new Vector3(1000 * m_skeletonDataAsset.scale, 0, 0));
 				Handles.DrawLine(new Vector3(0, 1000 * m_skeletonDataAsset.scale, 0), new Vector3(0, -1000 * m_skeletonDataAsset.scale, 0));
 			}
 				
-			this.m_previewUtility.m_Camera.Render();
+			this.m_previewUtility.camera.Render();
 			go.GetComponent<Renderer>().enabled = false;
 		}
 			
@@ -611,15 +611,15 @@ public class SkeletonDataAssetInspector : Editor {
 			
 		this.InitPreview();
 			
-		if (this.m_previewUtility.m_Camera == null)
+		if (this.m_previewUtility.camera == null)
 			return null;
 			
 		m_requireRefresh = true;
 		this.DoRenderPreview(false);
 		AdjustCameraGoals(false);
 			
-		this.m_previewUtility.m_Camera.orthographicSize = m_orthoGoal / 2;
-		this.m_previewUtility.m_Camera.transform.position = m_posGoal;
+		this.m_previewUtility.camera.orthographicSize = m_orthoGoal / 2;
+		this.m_previewUtility.camera.transform.position = m_posGoal;
 		this.m_previewUtility.BeginStaticPreview(new Rect(0, 0, width, height));
 		this.DoRenderPreview(false);
 			
