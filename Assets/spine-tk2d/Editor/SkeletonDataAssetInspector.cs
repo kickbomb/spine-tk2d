@@ -305,7 +305,7 @@ public class SkeletonDataAssetInspector : Editor {
 		return skeletonJSON.objectReferenceValue != null && spriteCollection.objectReferenceValue != null && !failedSkeletonDataLatch;
 	}
 		
-	Texture m_previewTex = new Texture();
+	Texture m_previewTex;
 
 	public override void OnInteractivePreviewGUI (Rect r, GUIStyle background) {
 		if(m_skeletonDataAsset.spriteCollection == null)
